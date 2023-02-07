@@ -9,9 +9,10 @@ from services.list import ListService
 loop = asyncio.get_event_loop()
 app = Flask(__name__)
 
-es_ip = os.getenv("ES_IP")
-es_port = os.getenv("ES_PORT")
-es_index = os.getenv("ES_INDEX")
+app.config.from_prefixed_env()
+es_ip = os.environ.get("ES_IP")
+es_port = os.environ.get("ES_PORT")
+es_index = os.environ.get("ES_INDEX")
 
 controller = Controller(es_ip, es_port, es_index)
 
