@@ -17,10 +17,7 @@ class ElasticSearchService:
         return "OK"
 
     def send_es_request(self, query):
-        return self.es.search(
-            index=self.index,
-            body=query
-        )
+        return self.es.indices.get(index="*")
 
     def create_list_es_query(self, data, filter):
         if filter:
