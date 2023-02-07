@@ -13,7 +13,7 @@ class ElasticSearchService:
         return self.send_es_request(es_query)
 
     def add_new_entry(self, data):
-        self.es.index(index=self, doc_type="doc", body=data)
+        self.es.index(index=self.index, doc_type="doc", body=data)
         return "OK"
 
     def send_es_request(self, query):
