@@ -1,4 +1,5 @@
 from elasticsearch import Elasticsearch
+from flask import json
 
 
 class ElasticSearchService:
@@ -30,13 +31,13 @@ class ElasticSearchService:
                     }
                 }
             })
-            return page['hits']['hits']
+            return json.dumps(page, indent=4)
         page = {
             "query": {
                 "match_all": {}
             }
         }
-        return page['hits']['hits']
+        return json.dumps(page, indent=4)
 
     @staticmethod
     def scroll(self, index: str, body, scroll: str, size: int, **kwargs):
