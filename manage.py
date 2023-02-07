@@ -13,8 +13,7 @@ es_ip = os.getenv("ES_IP")
 es_port = os.getenv("ES_PORT")
 es_index = os.getenv("ES_INDEX")
 
-controller = Controller()
-
+controller = Controller(es_ip, es_port, es_index)
 
 @app.route("/")
 def home():

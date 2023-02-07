@@ -3,8 +3,8 @@ from services.list import ListService
 
 
 class Controller:
-    def __init__(self) -> None:
-        self.es_service = ElasticSearchService("xxx", "xxx", "xxx")
+    def __init__(self, es_ip, es_port, es_index) -> None:
+        self.es_service = ElasticSearchService(es_ip, es_port, es_index)
         self.list_service = ListService(self.es_service)
 
     def home(self):
