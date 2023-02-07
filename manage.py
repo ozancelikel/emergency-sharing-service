@@ -40,4 +40,4 @@ def add_new():
 
 
 if __name__ == "__main__":
-    app.run(debug=False, use_reloader=False)
+    app.run(host='0.0.0.0', debug=False, use_reloader=False)
