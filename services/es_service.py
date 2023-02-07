@@ -1,5 +1,4 @@
 from elasticsearch import Elasticsearch
-import aiohttp
 
 class ElasticSearchService:
     def __init__(self, ip, port, index) -> None:
