@@ -19,6 +19,9 @@ class ElasticSearchService:
         )
 
         return resp.data
+    
+    def add_new_entry(self, data):
+        self.create_add_query()
 
     @staticmethod
     def create_list_es_query(query, filter):

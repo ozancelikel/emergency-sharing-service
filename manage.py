@@ -32,6 +32,10 @@ def list():
 def notify(org):
     return f"notifying {org}"
 
+@app.route("/add", methods=["POST"])
+def add_new():
+    return controller.add_new(request.json)
+
 
 if __name__ == "__main__":
     app.run(debug=False, use_reloader=False)

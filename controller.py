@@ -14,6 +14,8 @@ class Controller:
         return self.list_service.get_list()
 
     def get_filtered_list(self, data):
+        
         return self.list_service.get_filtered_list()
 
-
+    def add_new(self, data):
+        
