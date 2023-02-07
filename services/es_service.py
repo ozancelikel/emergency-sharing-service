@@ -10,7 +10,6 @@ class ElasticSearchService:
     
     def get_es_result(self, query):
         es_query = self.create_list_es_query(query)
-        
         return self.send_es_request(es_query)
 
     def add_new_entry(self, data):
@@ -22,7 +21,7 @@ class ElasticSearchService:
 
     def create_list_es_query(self, filter_data):
         if filter_data:
-            self.es.search(index=self.index, body={
+            return self.es.search(index=self.index, body={
                 "query": {
                     "match": {
                         "title": f'{filter_data}'
