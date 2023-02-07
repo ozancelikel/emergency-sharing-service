@@ -4,7 +4,6 @@ import os
 from flask import Flask, request
 
 from controller import Controller
-from services.list import ListService
 
 loop = asyncio.get_event_loop()
 app = Flask(__name__)
