@@ -1,3 +1,4 @@
+from elasticsearch import Elasticsearch
 import aiohttp
 
 class ElasticSearchService:
@@ -5,6 +6,7 @@ class ElasticSearchService:
         self.ip = ip
         self.port = port
         self.index = index
+        self.es = Elasticsearch([f"http://{self.ip}:{self.port}"])
         self.client = aiohttp.ClientSession()
     
     def get_es_result(self, query, filter=None):
@@ -21,7 +23,7 @@ class ElasticSearchService:
         return resp.data
     
     def add_new_entry(self, data):
-        self.create_add_query()
+        self.es.index(index=self.index, body=data)
 
     @staticmethod
     def create_list_es_query(query, filter):
@@ -30,13 +32,13 @@ class ElasticSearchService:
         return "unfiltered list query"
 
     @staticmethod
-    def scroll(es, index: str, body, scroll: str, size: int, **kwargs):
-        page = es.search(index=index, body=body, scroll=scroll, size=size, **kwargs)
+    def scroll(self, index: str, body, scroll: str, size: int, **kwargs):
+        page = self.es.search(index=index, body=body, scroll=scroll, size=size, **kwargs)
         scroll_id = page['_scroll_id']
         hits = page['hits']['hits']
         while len(hits):
             yield hits
-            page = es.scroll(scroll_id=scroll_id, scroll=scroll)
+            page = self.es.scroll(scroll_id=scroll_id, scroll=scroll)
             scroll_id = page['_scroll_id']
             hits = page['hits']['hits']
 
