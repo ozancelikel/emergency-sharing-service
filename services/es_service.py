@@ -23,15 +23,14 @@ class ElasticSearchService:
         )
 
     def create_list_es_query(self, data, filter):
-        return self.es.get(index=self.index)
-        # if filter:
-        #     body = {
-        #             "query": {
-        #                     "match_all": {}
-        #                 }
-        #             }
-        #     return body
-        # return "unfiltered list query"
+        if filter:
+            body = {
+                    "query": {
+                            "match_all": {}
+                        }
+                    }
+            return body
+        return "unfiltered list query"
 
     @staticmethod
     def scroll(self, index: str, body, scroll: str, size: int, **kwargs):

@@ -11,7 +11,7 @@ class Controller:
         return "this is home page"
 
     def get_list(self):
-        return self.list_service.get_list()
+        return self.es_service.get_es_result("")
 
     def get_filtered_list(self, data):
         
