@@ -23,18 +23,20 @@ class ElasticSearchService:
 
     def create_list_es_query(self, filter_data):
         if filter_data:
-            return self.es.search(index=self.index, body={
+            page = self.es.search(index=self.index, body={
                 "query": {
                     "match": {
                         "title": f'{filter_data}'
                     }
                 }
             })
-        return {
+            return page['hits']['hits']
+        page = {
             "query": {
                 "match_all": {}
             }
         }
+        return page['hits']['hits']
 
     @staticmethod
     def scroll(self, index: str, body, scroll: str, size: int, **kwargs):
