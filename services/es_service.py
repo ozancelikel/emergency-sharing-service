@@ -13,16 +13,24 @@ class ElasticSearchService:
         return self.send_es_request(es_query)
 
     def add_new_entry(self, data):
-        self.es.index(index='ads', doc_type="doc", body=data)
+        self.es.index(index=self, doc_type="doc", body=data)
         return "OK"
 
     def send_es_request(self, query):
-        return self.es.post(query=query)
+        return self.es.search(
+            index=self.index,
+            body=query
+        )
     
     @staticmethod
     def create_list_es_query(data, filter):
         if filter:
-            return "filtered list query"
+            body = {
+                    "query": {
+                            "match_all": {}
+                        }
+                    }
+            return body
         return "unfiltered list query"
 
     @staticmethod
