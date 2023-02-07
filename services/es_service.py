@@ -21,10 +21,21 @@ class ElasticSearchService:
         return resp.data
     
     def add_new_entry(self, data):
-        self.create_add_query()
+        es_query = self.create_add_query(data)
+        # TODO: result = self.send_es_request(es_query)
+        return "entry added"
 
     @staticmethod
-    def create_list_es_query(query, filter):
+    def create_add_query(data):
+        new_entry = {
+            "name" : data.get("name"),
+            "phone_number": data.get("phone"),
+            "adress": data.get("adress")
+        }
+        return "query for adding new entry"
+    
+    @staticmethod
+    def create_list_es_query(data, filter):
         if filter:
             return "filtered list query"
         return "unfiltered list query"

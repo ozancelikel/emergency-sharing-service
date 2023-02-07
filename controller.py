@@ -18,4 +18,5 @@ class Controller:
         return self.list_service.get_filtered_list()
 
     def add_new(self, data):
-        
+        self.es_service.add_new_entry(data)
+        return "OK"
