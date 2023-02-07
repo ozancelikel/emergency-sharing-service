@@ -1,4 +1,6 @@
 import asyncio
+import os
+
 from flask import Flask, request
 
 from controller import Controller
@@ -7,6 +9,10 @@ from services.list import ListService
 loop = asyncio.get_event_loop()
 app = Flask(__name__)
 
+es_ip = os.getenv("ES_IP")
+es_port = os.getenv("ES_PORT")
+es_index = os.getenv("ES_INDEX")
+
 controller = Controller()
 
 
@@ -14,10 +20,6 @@ controller = Controller()
 def home():
     return controller.home()
 
-@app.route("/list", methods=["GET", "POST"])
-def list_page(org):
-    a = request.data
-    return f"showing {org}"
 
 @app.route("/list", methods=["GET", "POST"])
 def list():
