@@ -23,20 +23,20 @@ class ElasticSearchService:
         return result
 
     def create_list_es_query(self, filter_data):
+        body = {
+            "query": {
+                "match_all": {}
+            }
+        }
         if filter_data:
-            page = self.es.search(index=self.index, body={
+            body = {
                 "query": {
                     "match": {
                         "title": f'{filter_data}'
                     }
                 }
-            })
-            return json.dumps(page, indent=4)
-        page = {
-            "query": {
-                "match_all": {}
             }
-        }
+        page = self.es.search(index=self.index, body=body)
         return json.dumps(page, indent=4)
 
     @staticmethod
