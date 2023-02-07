@@ -1,6 +1,7 @@
 from flask import Flask
 from controller import Controller
 
+
 class FlaskApplication(Flask):
     def __init__(self, name, ip, port):
         super().__init__(name)
@@ -20,12 +21,14 @@ class FlaskApplication(Flask):
             methods=["GET"]
         )
 
+
 def create_app() -> FlaskApplication:
     app = __create_app
     app.add_url_rule(
         "/",
     )
     return app
+
 
 def __create_app(ip, port) -> FlaskApplication:
     app = FlaskApplication(__name__, ip, port)
