@@ -20,8 +20,4 @@ class ElasticSearchService:
             hits = page['hits']['hits']
 
 
-def example_usage():
-    es = ElasticSearchService("localhost", 9200, "test")
-    query = {"query": {"match_all": {}}}
-    for hits in es.scroll(es, es.index, query, scroll='2m', size=100):
-        print(json.dumps(hits, indent=2))
+
