@@ -1,7 +1,7 @@
 import asyncio
 import os
 
-from flask import Flask, request
+from flask import Flask, request, make_response, jsonify
 
 from controller import Controller
 
@@ -24,7 +24,7 @@ def home():
 @app.route("/list", methods=["GET", "POST"])
 def list():
     if request.method == "GET":
-        return controller.get_list()
+        return make_response(jsonify(controller.get_list()), 200)
     if request.method == "POST":
         return controller.get_filtered_list(request.json)
     return f""
