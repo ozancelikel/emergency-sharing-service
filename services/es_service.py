@@ -13,8 +13,7 @@ class ElasticSearchService:
         self.es = Elasticsearch([self.url])
     
     def get_es_result(self, query):
-        es_query = self.create_list_es_query(query)
-        return self.send_es_request(es_query)
+        return self.create_list_es_query(query)
         # return self.send_es_req(Search().query("match", _id=query)).to_dict()
 
     # def send_es_req(self, query):
@@ -31,11 +30,6 @@ class ElasticSearchService:
     def add_new_entry(self, data):
         self.es.index(index=self.index, doc_type="_doc", query=data)
         return "OK"
-
-    def send_es_request(self, query):
-        result = self.es.search(index=self.index, query=query)
-        print(result)
-        return result
 
     def create_list_es_query(self, filter_data):
         query = {
