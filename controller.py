@@ -14,8 +14,8 @@ class Controller:
     def get_filtered_list(self, data):
         return self.es_service.get_es_result(data)
 
-    def get_page(self, page):
-        return self.es_service.scroll_test(page)
+    def get_page(self, page, page_number, page_size):
+        return self.es_service.scroll(page, page_number, page_size)
 
     def add_new(self, data):
         self.es_service.add_new_entry(data)

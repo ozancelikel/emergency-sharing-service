@@ -1,5 +1,4 @@
 import asyncio
-import os
 
 from flask import Flask, request, make_response, jsonify
 
@@ -40,10 +39,9 @@ def add_new():
 
 @app.route("/test_pagination", methods=["GET", "POST"])
 def test_pagination():
-    # TODO: pagination should be done in here
     if request.method == "POST":
-        return controller.get_page(request.json)
-    return controller.get_page(0)
+        return controller.get_page(request.json.get('query'), request.json.get('pn'), request.json.get('ps'))
+    return controller.get_page("", 0, 10)
 
 
 if __name__ == "__main__":

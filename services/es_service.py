@@ -1,4 +1,3 @@
-import requests
 from elasticsearch import Elasticsearch
 from flask import json
 
@@ -15,18 +14,6 @@ class ElasticSearchService:
     
     def get_es_result(self, query):
         return self.create_list_es_query(query)
-        # return self.send_es_req(Search().query("match", _id=query)).to_dict()
-
-    # def send_es_req(self, query):
-    #     data = json.dumps(query)
-    #     res = requests.post(
-    #         url=self.url,
-    #         headers=self.headers,
-    #         data=data
-    #     )
-    #     es_result = res.text
-    #     es_result = json.loads(es_result)
-    #     return es_result
 
     def add_new_entry(self, data):
         request = ListingRequest(**data).to_dict()
@@ -50,25 +37,10 @@ class ElasticSearchService:
     def create_list_es_query(self, filter_data):
         query = self._get_filter_query(filter_data)
         page = self.es.search(index=self.index, query=query)
-        return json.dumps(page, indent=4)
+        return json.dumps(page['hits']['hits'], indent=4)
 
-    def scroll_test(self, filter_data):
+    def scroll(self, filter_data, page_number, page_size):
         query = self._get_filter_query(filter_data)
-        page = self.es.search(index=self.index, query=query)
+        page = self.es.search(index=self.index, query=query, from_=page_number, size=page_size)
         hits = page['hits']['hits']
-        while len(hits):
-            yield hits
-            page = self.es.scroll(scroll_id=page['_scroll_id'], scroll='2m')
-            scroll_id = page['_scroll_id']
-            hits = page['hits']['hits']
-
-    @staticmethod
-    def scroll(self, index: str, body, scroll: str, size: int, **kwargs):
-        page = self.es.search(index=index, doc_type="_doc", body=body, scroll=scroll, size=size, **kwargs)
-        scroll_id = page['_scroll_id']
-        hits = page['hits']['hits']
-        while len(hits):
-            yield hits
-            page = self.es.scroll(scroll_id=scroll_id, scroll=scroll)
-            scroll_id = page['_scroll_id']
-            hits = page['hits']['hits']
+        return json.dumps(hits, indent=4)
