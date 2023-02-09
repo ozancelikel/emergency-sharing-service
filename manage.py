@@ -16,26 +16,34 @@ es_index = "earthquake"
 
 controller = Controller(es_ip, es_port, es_index)
 
-@app.route("/")
-def home():
-    return controller.home()
-
 
 @app.route("/list", methods=["GET", "POST"])
-def list():
+def list_():
     if request.method == "GET":
+        # TODO: add page number and size
         return make_response(jsonify(controller.get_list()), 200)
     if request.method == "POST":
-        return controller.get_filtered_list(request.json)
+        # TODO: add filter
+        return make_response(jsonify(controller.get_filtered_list(request.json), 200))
     return f""
+
 
 @app.route("/notify")
 def notify(org):
     return f"notifying {org}"
 
+
 @app.route("/add", methods=["POST"])
 def add_new():
     return controller.add_new(request.json)
+
+
+@app.route("/test_pagination", methods=["GET", "POST"])
+def test_pagination():
+    # TODO: pagination should be done in here
+    if request.method == "POST":
+        return controller.get_page(request.json)
+    return controller.get_page(0)
 
 
 if __name__ == "__main__":

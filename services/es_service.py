@@ -1,7 +1,8 @@
 import requests
 from elasticsearch import Elasticsearch
-from elasticsearch_dsl import Search
 from flask import json
+
+from models.request.listing_request import ListingRequest
 
 
 class ElasticSearchService:
@@ -28,10 +29,12 @@ class ElasticSearchService:
     #     return es_result
 
     def add_new_entry(self, data):
-        self.es.index(index=self.index, doc_type="_doc", query=data)
+        request = ListingRequest(**data).to_dict()
+        self.es.index(index=self.index, doc_type="_doc", query=request)
         return "OK"
 
-    def create_list_es_query(self, filter_data):
+    @staticmethod
+    def _get_filter_query(filter_data):
         query = {
             "match_all": {}
         }
@@ -42,8 +45,22 @@ class ElasticSearchService:
                     "title": f'{filter_data}'
                 }
             }
+        return query
+
+    def create_list_es_query(self, filter_data):
+        query = self._get_filter_query(filter_data)
         page = self.es.search(index=self.index, query=query)
         return json.dumps(page, indent=4)
+
+    def scroll_test(self, filter_data):
+        query = self._get_filter_query(filter_data)
+        page = self.es.search(index=self.index, query=query)
+        hits = page['hits']['hits']
+        while len(hits):
+            yield hits
+            page = self.es.scroll(scroll_id=page['_scroll_id'], scroll='2m')
+            scroll_id = page['_scroll_id']
+            hits = page['hits']['hits']
 
     @staticmethod
     def scroll(self, index: str, body, scroll: str, size: int, **kwargs):
@@ -55,4 +72,3 @@ class ElasticSearchService:
             page = self.es.scroll(scroll_id=scroll_id, scroll=scroll)
             scroll_id = page['_scroll_id']
             hits = page['hits']['hits']
-

@@ -11,9 +11,11 @@ class Controller:
     def get_list(self):
         return self.es_service.get_es_result("")
 
-    # def get_filtered_list(self, data):
-    #
-    #     return self.es_service.get_filtered_list()
+    def get_filtered_list(self, data):
+        return self.es_service.get_es_result(data)
+
+    def get_page(self, page):
+        return self.es_service.scroll_test(page)
 
     def add_new(self, data):
         self.es_service.add_new_entry(data)
